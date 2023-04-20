@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_carrot/detail_page.dart';
+import 'kongbob_item.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,91 +12,53 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
-    items.add(Kongbobitem(title: '팝니다', addr: '우리집', price: 1000));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 500000000));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10001));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10002));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10003));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10004));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10005));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10006));
+    items.add(Kongbobitem(title: '안팝니다', addr: '우리집', price: 10007));
 
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('kongbob market'),
-          backgroundColor: Colors.orange,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [for (var item in items) item],
-          ),
-        ),
-      ),
+      home: HomePage(items: items),
     );
   }
 }
 
-class Kongbobitem extends StatelessWidget {
-  String title, addr;
-  int price;
-
-  Kongbobitem({
-    required this.title,
-    required this.addr,
-    required this.price,
+class HomePage extends StatelessWidget {
+  const HomePage({
     super.key,
+    required this.items,
   });
+
+  final List<Kongbobitem> items;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 150,
-          height: 150,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              image: const DecorationImage(
-                  image: AssetImage('images/haerin.jpg'))),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('kongbob market'),
+        backgroundColor: Colors.orange,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          // 행동 인식
+          children: [
+            for (var item in items)
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Detail_page(price: item.price),
+                        ));
+                  },
+                  child: item)
+          ],
         ),
-        const SizedBox(
-          width: 20,
-        ),
-        Flexible(
-          flex: 1,
-          child: SizedBox(
-            height: 150,
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                // Divider()로 가능
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  addr,
-                  style: const TextStyle(
-                      decoration: TextDecoration.underline, color: Colors.grey),
-                ),
-                Text('$price'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: const [Icon(Icons.heart_broken), Text('0')],
-                )
-              ],
-            ),
-          ),
-        )
-      ],
+      ),
     );
   }
 }
